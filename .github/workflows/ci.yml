@@ -37,3 +37,14 @@ jobs:
         env:
           CI: 'true'
           VERBOSE: 'true'
+
+  kind:
+    name: K8s in Docker
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: engineerd/setup-kind@v0.3.0
+    - name: Testing
+      run: |
+        kubectl cluster-info
+        kubectl get pods -n kube-system
