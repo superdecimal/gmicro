@@ -9,6 +9,15 @@ export GOBIN=$(CURDIR)/$(BIN)
 export PATH:=$(GOBIN):$(PATH)
 export GO111MODULE=on
 
+# We do not support windows. Sorry :)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OS = linux
+endif
+ifeq ($(UNAME_S),Darwin)
+	OS = darwin
+endif
+
 .PHONY: deps
 deps:
 	GO111MODULE=off go get -u github.com/myitcv/gobin
