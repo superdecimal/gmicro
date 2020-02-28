@@ -39,3 +39,4 @@ clean:
 minikube:
 	curl -Lo $(MINI) https://storage.googleapis.com/minikube/releases/latest/minikube-$(OS)-amd64 \
 	&& chmod +x $(MINI)
+	$(MINI) start
