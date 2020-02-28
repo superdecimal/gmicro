@@ -1,11 +1,13 @@
 
-BIN:=bin
+BIN=bin
 GOBIN:=$(CURDIR)/$(BIN)
-GB=$(GOBIN)/gobin
+GB=$(BIN)/gobin
 
 $(shell mkdir -p $(BIN))
 
+export GOBIN=$(CURDIR)/$(BIN)
 export PATH:=$(GOBIN):$(PATH)
+export GO111MODULE=on
 
 .PHONY: deps
 deps:
@@ -13,7 +15,7 @@ deps:
 	$(GB) github.com/golangci/golangci-lint/cmd/golangci-lint@v1.23.7
 
 .PHONY: lint
-lint:
+lint: deps
 	golangci-lint run
 
 .PHONY: test
