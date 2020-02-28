@@ -2,7 +2,6 @@
 BIN=bin
 GOBIN:=$(CURDIR)/$(BIN)
 GB=$(BIN)/gobin
-MINI=$(BIN)/minikube
 
 $(shell mkdir -p $(BIN))
 
@@ -35,8 +34,3 @@ test:
 .PHONY: clean
 clean:
 	rm -rf $(GOBIN)
-
-minikube:
-	curl -Lo $(MINI) https://storage.googleapis.com/minikube/releases/latest/minikube-$(OS)-amd64 \
-	&& chmod +x $(MINI)
-	$(MINI) start
