@@ -41,7 +41,6 @@ func (srv *server) Stop() {
 func (srv *server) Listen(
 	port int,
 ) error {
-
 	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", port))
 	if err != nil {
 		return err
@@ -63,7 +62,7 @@ func (srv *server) Add(
 	error,
 ) {
 	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	defer logger.Sync() //nolint:errcheck
 
 	// get the inputs
 	a := req.GetA()

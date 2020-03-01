@@ -12,7 +12,7 @@ LINT=golangci-lint
 $(shell mkdir -p $(BIN))
 
 export GOBIN=$(CURDIR)/$(BIN)
-export PATH:=$(GOBIN):$(PATH)
+export PATH:=$(PATH):$(GOBIN)
 export GO111MODULE=on
 
 # We do not support windows. Sorry :)
@@ -51,7 +51,7 @@ generate-proto:
 	@echo DONE
 
 .PHONY: generate-mocks
-generate-mocks-all:
+generate-mocks:
 	@echo GENERATING MOCKS...
 	@mkdir -p pkg/proto/mock/
 	@go generate ./...

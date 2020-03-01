@@ -16,8 +16,8 @@ func Wait(service Stopper, logger *zap.Logger) {
 	var gracefulStop = make(chan os.Signal)
 
 	// Get Notified for incoming signals
-	signal.Notify(gracefulStop, syscall.SIGTERM)
-	signal.Notify(gracefulStop, syscall.SIGINT)
+	signal.Notify(gracefulStop, syscall.SIGTERM) //nolint:staticcheck
+	signal.Notify(gracefulStop, syscall.SIGINT)  //nolint:staticcheck
 
 	// Wait for signal
 	sig := <-gracefulStop
@@ -25,5 +25,4 @@ func Wait(service Stopper, logger *zap.Logger) {
 	logger.Info("Terminating...", zap.String("signal", sig.String()))
 
 	service.Stop()
-
 }
