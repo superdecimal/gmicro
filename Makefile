@@ -2,8 +2,7 @@ BIN=bin
 GOBIN:=$(CURDIR)/$(BIN)
 DOCKER_ACCOUNT = superdecimal
 SERVICES_DOCKERFILES  = $(wildcard services/*/Dockerfile)
-BRANCH_HASH = $(shell git rev-parse --short HEAD)
-BRANCH_VERSION=$(shell echo $(shell git rev-parse --abbrev-ref HEAD) | tr '/' '-')-$(BRANCH_HASH)
+BRANCH_VERSION=$(shell git rev-parse --short HEAD)
 
 # Tools
 GB=$(BIN)/gobin
