@@ -10,7 +10,7 @@ import (
 
 func main() {
 	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	defer logger.Sync() //nolint:errcheck
 
 	conf, err := config.Read()
 	if err != nil {
@@ -18,6 +18,7 @@ func main() {
 	}
 
 	logger.Info("Starting calc-api...", zap.Int("port", conf.Port))
+
 	calcServer := calculator.NewServer()
 
 	go func() {
