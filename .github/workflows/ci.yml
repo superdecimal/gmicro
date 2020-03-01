@@ -37,6 +37,11 @@ jobs:
         env:
           CI: 'true'
           VERBOSE: 'true'
+
+      - name: Test charts
+        run: |
+          make lint-all-charts -B
+
   build:
     name: Build Dockerfiles
     runs-on: ubuntu-latest
@@ -56,12 +61,13 @@ jobs:
           VERBOSE: 'true'
 
   kind:
-    name: K8s in Docker
+    needs: build
+    name: Deploy app
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - uses: engineerd/setup-kind@v0.3.0
-    - name: Testing
+    - name: 
       run: |
         kubectl cluster-info
         kubectl get pods -n kube-system
