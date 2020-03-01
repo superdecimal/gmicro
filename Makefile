@@ -1,6 +1,9 @@
-
 BIN=bin
 GOBIN:=$(CURDIR)/$(BIN)
+DOCKER_ACCOUNT = superdecimal
+SERVICES_DOCKERFILES  = $(wildcard services/*/Dockerfile)
+BRANCH_HASH = $(shell git rev-parse --short HEAD)
+BRANCH_VERSION=$(shell echo $(shell git rev-parse --abbrev-ref HEAD) | tr '/' '-')-$(BRANCH_HASH)
 
 # Tools
 GB=$(BIN)/gobin
@@ -55,8 +58,11 @@ generate-mocks-all:
 	@go generate ./...
 	@echo DONE
 
-lala:
-	mockgen
+build-all: $(SERVICES_DOCKERFILES) 
+
+services/%/Dockerfile:
+	docker build -f $@ -t $(DOCKER_ACCOUNT)/$*:$(BRANCH_VERSION) .
+	docker tag $(DOCKER_ACCOUNT)/$*:$(BRANCH_VERSION) $(DOCKER_ACCOUNT)/$*:latest
 
 .PHONY: dev-env
 dev-env: base-tools
