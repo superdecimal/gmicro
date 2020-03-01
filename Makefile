@@ -2,6 +2,7 @@ BIN=bin
 GOBIN:=$(CURDIR)/$(BIN)
 DOCKER_ACCOUNT = superdecimal
 SERVICES_DOCKERFILES  = $(wildcard services/*/Dockerfile)
+CHARTS = $(wildcard deploy/*/Chart.yaml)
 BRANCH_VERSION=$(shell git rev-parse --short HEAD)
 
 # Tools
@@ -30,6 +31,7 @@ base-tools:
 
 .PHONY: tools
 ci-tools: base-tools
+	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 	$(GB) github.com/golangci/golangci-lint/cmd/golangci-lint@v1.23.7
 
 .PHONY: lint
@@ -63,14 +65,22 @@ services/%/Dockerfile:
 	docker build -f $@ -t $(DOCKER_ACCOUNT)/$*:$(BRANCH_VERSION) .
 	docker tag $(DOCKER_ACCOUNT)/$*:$(BRANCH_VERSION) $(DOCKER_ACCOUNT)/$*:latest
 
+deploy/%/Chart.yaml:
+	helm lint deploy/$*
+
+lint-all-charts: $(CHARTS)
+
 .PHONY: dev-env
 dev-env: base-tools
 ifeq ($(OS),darwin)
 	brew install protobuf
+	brew install helm
 endif
 ifeq ($(OS),linux)
 	apt update
 	apt install protobuf-compiler
+	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
 endif
 	$(GB) github.com/golang/protobuf/protoc-gen-go@v1.3.4
 	$(GB) github.com/golang/mock/mockgen@v1.4.1
