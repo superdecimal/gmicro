@@ -68,7 +68,7 @@ services/%/Dockerfile:
 deploy/%/Chart.yaml:
 	helm lint deploy/$*
 
-lint-all-charts: $(CHARTS)
+lint-all-charts: ci-tools $(CHARTS) 
 
 .PHONY: dev-env
 dev-env: base-tools
