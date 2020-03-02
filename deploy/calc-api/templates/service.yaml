@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+      targetPort: grpc
+      protocol: UDP
+      name: grpc
   selector:
     {{- include "calc-api.selectorLabels" . | nindent 4 }}
