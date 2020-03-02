@@ -49,6 +49,7 @@ clean:
 .PHONY: generate-proto
 generate-proto:
 	@echo GENERATING PROTO...
+	@protoc  --go_out=plugins=grpc:pkg -I=$(PWD) proto/**/*.proto
 	@protoc  --go_out=plugins=grpc:pkg -I=$(PWD) proto/*.proto
 	@echo DONE
 
