@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	gmrpc "superdecimal/gmicro/pkg/proto"
+	hrpc "superdecimal/gmicro/pkg/proto/health"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -26,10 +27,12 @@ func NewServer() Server {
 	grpcServer := grpc.NewServer(opts...)
 
 	srv := &server{
-		grpcServer: grpc.NewServer(opts...),
+		grpcServer: grpcServer,
 	}
+	hsrv := &health{}
 
 	gmrpc.RegisterCalculatorAPIServer(grpcServer, srv)
+	hrpc.RegisterHealthServer(grpcServer, hsrv)
 
 	return srv
 }
