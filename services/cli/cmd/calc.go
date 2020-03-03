@@ -17,7 +17,7 @@ import (
 
 func CalcCommands(config *config.Configuration) *ishell.Cmd {
 	red := color.New(color.FgRed).SprintFunc()
-	srvAddr := fmt.Sprintf("%s:%s", config.Address, config.Address)
+	srvAddr := fmt.Sprintf("%s:%d", config.Address, config.Port)
 	calc := &ishell.Cmd{
 		Name: "calc",
 		Help: "CalcAPI operations",
@@ -32,7 +32,6 @@ func CalcCommands(config *config.Configuration) *ishell.Cmd {
 				defer c.ShowPrompt(true)
 
 				ctx := context.Background()
-
 				conn, err := grpc.Dial(srvAddr, grpc.WithInsecure())
 				if err != nil {
 					c.Println(red(err))
@@ -42,7 +41,7 @@ func CalcCommands(config *config.Configuration) *ishell.Cmd {
 
 				gmclient := gmrpc.NewCalculatorAPIClient(conn)
 
-				c.Println("Nubmer a: ")
+				c.Println("Number a: ")
 				a := c.ReadLine()
 				ai, err := strconv.ParseInt(a, 10, 32)
 				if err != nil {
@@ -50,7 +49,7 @@ func CalcCommands(config *config.Configuration) *ishell.Cmd {
 					return
 				}
 
-				c.Println("Nubmer b: ")
+				c.Println("Number b: ")
 				b := c.ReadLine()
 				bi, err := strconv.ParseInt(b, 10, 32)
 				if err != nil {
@@ -72,6 +71,59 @@ func CalcCommands(config *config.Configuration) *ishell.Cmd {
 
 				c.Println("Done, Result: ", resp.GetResult(), " time: ",
 					endTime.Sub(startTime))
+			},
+		})
+
+	calc.AddCmd(
+		&ishell.Cmd{
+			Name: "sum",
+			Help: "sums numbers until eof (type eof to stop the stream)",
+			Func: func(c *ishell.Context) {
+				c.ShowPrompt(false)
+				defer c.ShowPrompt(true)
+
+				ctx := context.Background()
+
+				conn, err := grpc.Dial(srvAddr, grpc.WithInsecure())
+				if err != nil {
+					c.Println(red(err))
+					return
+				}
+				defer conn.Close()
+
+				gmclient := gmrpc.NewCalculatorAPIClient(conn)
+
+				stream, err := gmclient.Sum(ctx)
+				if err != nil {
+					c.Println(red(err))
+					return
+				}
+
+				for {
+					c.Println("Number: ")
+					a := c.ReadLine()
+					if a == "eof" {
+						resp, err := stream.CloseAndRecv()
+						if err != nil {
+							c.Println(red(err))
+						}
+						c.Println("Done, Result: ", resp.GetResult())
+						break
+					}
+
+					ai, err := strconv.ParseInt(a, 10, 32)
+					if err != nil {
+						c.Println("Not a number: " + red(a))
+						return
+					}
+
+					if err := stream.Send(
+						&gmrpc.Integer{Num: int32(ai)},
+					); err != nil {
+						c.Println(red(err))
+						return
+					}
+				}
 			},
 		})
 
