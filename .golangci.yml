@@ -31,3 +31,5 @@ linters:
   enable-all: true
   disable:
     - gomnd
+    - gocyclo
+    - funlen

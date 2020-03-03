@@ -10,7 +10,7 @@ type Configuration struct {
 	Address string `default:"localhost"`
 }
 
-const prefix = "GM"
+const prefix = "GM_CLI"
 
 func Read() (
 	*Configuration,
