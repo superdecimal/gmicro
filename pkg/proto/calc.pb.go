@@ -110,9 +110,89 @@ func (m *AddResponse) GetResult() int32 {
 	return 0
 }
 
+type Integer struct {
+	Num                  int32    `protobuf:"varint,1,opt,name=num,proto3" json:"num,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Integer) Reset()         { *m = Integer{} }
+func (m *Integer) String() string { return proto.CompactTextString(m) }
+func (*Integer) ProtoMessage()    {}
+func (*Integer) Descriptor() ([]byte, []int) {
+	return fileDescriptor_584ef17bc26b2c88, []int{2}
+}
+
+func (m *Integer) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Integer.Unmarshal(m, b)
+}
+func (m *Integer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Integer.Marshal(b, m, deterministic)
+}
+func (m *Integer) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Integer.Merge(m, src)
+}
+func (m *Integer) XXX_Size() int {
+	return xxx_messageInfo_Integer.Size(m)
+}
+func (m *Integer) XXX_DiscardUnknown() {
+	xxx_messageInfo_Integer.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Integer proto.InternalMessageInfo
+
+func (m *Integer) GetNum() int32 {
+	if m != nil {
+		return m.Num
+	}
+	return 0
+}
+
+type SumResponse struct {
+	Result               int32    `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SumResponse) Reset()         { *m = SumResponse{} }
+func (m *SumResponse) String() string { return proto.CompactTextString(m) }
+func (*SumResponse) ProtoMessage()    {}
+func (*SumResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_584ef17bc26b2c88, []int{3}
+}
+
+func (m *SumResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SumResponse.Unmarshal(m, b)
+}
+func (m *SumResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SumResponse.Marshal(b, m, deterministic)
+}
+func (m *SumResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SumResponse.Merge(m, src)
+}
+func (m *SumResponse) XXX_Size() int {
+	return xxx_messageInfo_SumResponse.Size(m)
+}
+func (m *SumResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_SumResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SumResponse proto.InternalMessageInfo
+
+func (m *SumResponse) GetResult() int32 {
+	if m != nil {
+		return m.Result
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*AddRequest)(nil), "rpc.AddRequest")
 	proto.RegisterType((*AddResponse)(nil), "rpc.AddResponse")
+	proto.RegisterType((*Integer)(nil), "rpc.Integer")
+	proto.RegisterType((*SumResponse)(nil), "rpc.SumResponse")
 }
 
 func init() {
@@ -120,17 +200,20 @@ func init() {
 }
 
 var fileDescriptor_584ef17bc26b2c88 = []byte{
-	// 151 bytes of a gzipped FileDescriptorProto
+	// 200 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x28, 0xca, 0x2f,
 	0xc9, 0xd7, 0x4f, 0x4e, 0xcc, 0x49, 0xd6, 0x03, 0x33, 0x85, 0x98, 0x8b, 0x0a, 0x92, 0x95, 0x34,
 	0xb8, 0xb8, 0x1c, 0x53, 0x52, 0x82, 0x52, 0x0b, 0x4b, 0x53, 0x8b, 0x4b, 0x84, 0x78, 0xb8, 0x18,
 	0x13, 0x25, 0x18, 0x15, 0x18, 0x35, 0x58, 0x83, 0x18, 0x13, 0x41, 0xbc, 0x24, 0x09, 0x26, 0x08,
 	0x2f, 0x49, 0x49, 0x95, 0x8b, 0x1b, 0xac, 0xb2, 0xb8, 0x20, 0x3f, 0xaf, 0x38, 0x55, 0x48, 0x8c,
-	0x8b, 0xad, 0x28, 0xb5, 0xb8, 0x34, 0xa7, 0x04, 0xaa, 0x1e, 0xca, 0x33, 0xb2, 0xe6, 0xe2, 0x75,
-	0x4e, 0xcc, 0x49, 0x2e, 0xcd, 0x49, 0x2c, 0xc9, 0x2f, 0x72, 0x0c, 0xf0, 0x14, 0xd2, 0xe2, 0x62,
-	0x76, 0x4c, 0x49, 0x11, 0xe2, 0xd7, 0x2b, 0x2a, 0x48, 0xd6, 0x43, 0xd8, 0x25, 0x25, 0x80, 0x10,
-	0x80, 0x18, 0xa9, 0xc4, 0x90, 0xc4, 0x06, 0x76, 0x99, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x73,
-	0x36, 0x00, 0x3d, 0xad, 0x00, 0x00, 0x00,
+	0x8b, 0xad, 0x28, 0xb5, 0xb8, 0x34, 0xa7, 0x04, 0xaa, 0x1e, 0xca, 0x53, 0x92, 0xe6, 0x62, 0xf7,
+	0xcc, 0x2b, 0x49, 0x4d, 0x4f, 0x2d, 0x12, 0x12, 0xe0, 0x62, 0xce, 0x2b, 0xcd, 0x85, 0xca, 0x83,
+	0x98, 0x20, 0x33, 0x82, 0x4b, 0x73, 0x09, 0x99, 0x61, 0x94, 0xc2, 0xc5, 0xeb, 0x9c, 0x98, 0x93,
+	0x5c, 0x9a, 0x93, 0x58, 0x92, 0x5f, 0xe4, 0x18, 0xe0, 0x29, 0xa4, 0xc5, 0xc5, 0xec, 0x98, 0x92,
+	0x22, 0xc4, 0xaf, 0x57, 0x54, 0x90, 0xac, 0x87, 0x70, 0xaf, 0x94, 0x00, 0x42, 0x00, 0x62, 0xa4,
+	0x12, 0x83, 0x90, 0x3a, 0x17, 0x73, 0x70, 0x69, 0xae, 0x10, 0x0f, 0x58, 0x0a, 0xea, 0x14, 0xa8,
+	0x42, 0x24, 0xbb, 0x35, 0x18, 0x93, 0xd8, 0xc0, 0xc1, 0x60, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff,
+	0x6d, 0x3f, 0xe2, 0x00, 0x1a, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -146,6 +229,7 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CalculatorAPIClient interface {
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	Sum(ctx context.Context, opts ...grpc.CallOption) (CalculatorAPI_SumClient, error)
 }
 
 type calculatorAPIClient struct {
@@ -165,9 +249,44 @@ func (c *calculatorAPIClient) Add(ctx context.Context, in *AddRequest, opts ...g
 	return out, nil
 }
 
+func (c *calculatorAPIClient) Sum(ctx context.Context, opts ...grpc.CallOption) (CalculatorAPI_SumClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_CalculatorAPI_serviceDesc.Streams[0], "/rpc.CalculatorAPI/Sum", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &calculatorAPISumClient{stream}
+	return x, nil
+}
+
+type CalculatorAPI_SumClient interface {
+	Send(*Integer) error
+	CloseAndRecv() (*SumResponse, error)
+	grpc.ClientStream
+}
+
+type calculatorAPISumClient struct {
+	grpc.ClientStream
+}
+
+func (x *calculatorAPISumClient) Send(m *Integer) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *calculatorAPISumClient) CloseAndRecv() (*SumResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(SumResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // CalculatorAPIServer is the server API for CalculatorAPI service.
 type CalculatorAPIServer interface {
 	Add(context.Context, *AddRequest) (*AddResponse, error)
+	Sum(CalculatorAPI_SumServer) error
 }
 
 // UnimplementedCalculatorAPIServer can be embedded to have forward compatible implementations.
@@ -176,6 +295,9 @@ type UnimplementedCalculatorAPIServer struct {
 
 func (*UnimplementedCalculatorAPIServer) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
+}
+func (*UnimplementedCalculatorAPIServer) Sum(srv CalculatorAPI_SumServer) error {
+	return status.Errorf(codes.Unimplemented, "method Sum not implemented")
 }
 
 func RegisterCalculatorAPIServer(s *grpc.Server, srv CalculatorAPIServer) {
@@ -200,6 +322,32 @@ func _CalculatorAPI_Add_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CalculatorAPI_Sum_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(CalculatorAPIServer).Sum(&calculatorAPISumServer{stream})
+}
+
+type CalculatorAPI_SumServer interface {
+	SendAndClose(*SumResponse) error
+	Recv() (*Integer, error)
+	grpc.ServerStream
+}
+
+type calculatorAPISumServer struct {
+	grpc.ServerStream
+}
+
+func (x *calculatorAPISumServer) SendAndClose(m *SumResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *calculatorAPISumServer) Recv() (*Integer, error) {
+	m := new(Integer)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _CalculatorAPI_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "rpc.CalculatorAPI",
 	HandlerType: (*CalculatorAPIServer)(nil),
@@ -209,6 +357,12 @@ var _CalculatorAPI_serviceDesc = grpc.ServiceDesc{
 			Handler:    _CalculatorAPI_Add_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Sum",
+			Handler:       _CalculatorAPI_Sum_Handler,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "proto/calc.proto",
 }

@@ -3,6 +3,7 @@ package calculator
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 	gmrpc "superdecimal/gmicro/pkg/proto"
 	hrpc "superdecimal/gmicro/pkg/proto/health"
@@ -88,4 +89,45 @@ func (srv *server) Add(
 	return &gmrpc.AddResponse{
 		Result: result,
 	}, nil
+}
+
+func (srv *server) Sum(
+	stream gmrpc.CalculatorAPI_SumServer,
+) error {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync() //nolint:errcheck
+
+	logger.Info("Sum method called")
+
+	total := int32(0)
+
+	for {
+		num, err := stream.Recv()
+		logger.Info("Received num", zap.Int32("num", num.GetNum()))
+
+		if err == io.EOF {
+			if scerr := stream.SendAndClose(
+				&gmrpc.SumResponse{
+					Result: total,
+				}); scerr != nil {
+				logger.Error("Failed to send result", zap.Error(err))
+			}
+
+			break
+		}
+
+		if err != nil {
+			logger.Error("Failed to receive", zap.Error(err))
+			return err
+		}
+
+		total += num.GetNum()
+	}
+
+	logger.Info(
+		"Sum method finished",
+		zap.Int32("result", total),
+	)
+
+	return nil
 }

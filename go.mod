@@ -9,11 +9,12 @@ require (
 	github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/flynn-archive/go-shlex v0.0.0-20150515145356-3f9db97f8568 // indirect
+	github.com/golang/mock v1.4.1
 	github.com/golang/protobuf v1.3.4
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/spf13/viper v1.6.2 // indirect
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.1
 	go.uber.org/zap v1.14.0
 	google.golang.org/grpc v1.27.1
 	gopkg.in/abiosoft/ishell.v2 v2.0.0
+	gopkg.in/yaml.v2 v2.2.4 // indirect
 )
