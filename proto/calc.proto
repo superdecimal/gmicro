@@ -4,11 +4,14 @@ package rpc;
 
 service CalculatorAPI {
   rpc Add(AddRequest) returns (AddResponse) {}
+  rpc Sum(stream Integer) returns (SumResponse);
 }
 
 message AddRequest {
   int32 a = 1;
   int32 b = 2;
 }
-
 message AddResponse { int32 result = 1; }
+
+message Integer { int32 num = 1; }
+message SumResponse { int32 result = 1; }
