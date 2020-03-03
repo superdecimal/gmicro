@@ -1,11 +1,19 @@
 package main
 
 import (
+	"fmt"
+	"net"
 	"superdecimal/gmicro/pkg/utils"
 	"superdecimal/gmicro/services/calc-api/calculator"
+	"superdecimal/gmicro/services/calc-api/health"
+
 	"superdecimal/gmicro/services/calc-api/config"
 
+	gmrpc "superdecimal/gmicro/pkg/proto"
+	hrpc "superdecimal/gmicro/pkg/proto/health"
+
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -19,13 +27,31 @@ func main() {
 
 	logger.Info("Starting calc-api...", zap.Int("port", conf.Port))
 
-	calcServer := calculator.NewServer()
+	// Start new grpc server
+	opts := []grpc.ServerOption{}
+	grpcServer := grpc.NewServer(opts...)
 
 	go func() {
-		if err := calcServer.Listen(conf.Port); err != nil {
+		// Init server implementations
+		srv := calculator.NewServer(logger)
+		hsrv := health.NewServer()
+
+		// Register implementations on our grpc serve
+		gmrpc.RegisterCalculatorAPIServer(grpcServer, srv)
+		hrpc.RegisterHealthServer(grpcServer, hsrv)
+
+		// setup listener
+		lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", conf.Port))
+		if err != nil {
+			logger.Fatal("Failed to start server", zap.Error(err))
+		}
+
+		// serve
+		err = grpcServer.Serve(lis)
+		if err != nil {
 			logger.Fatal("Failed to start server", zap.Error(err))
 		}
 	}()
 
-	utils.Wait(calcServer, logger)
+	utils.Wait(grpcServer, logger)
 }

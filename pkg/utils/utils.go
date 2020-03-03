@@ -9,7 +9,7 @@ import (
 )
 
 type Stopper interface {
-	Stop()
+	GracefulStop()
 }
 
 func Wait(service Stopper, logger *zap.Logger) {
@@ -24,5 +24,5 @@ func Wait(service Stopper, logger *zap.Logger) {
 
 	logger.Info("Terminating...", zap.String("signal", sig.String()))
 
-	service.Stop()
+	service.GracefulStop()
 }

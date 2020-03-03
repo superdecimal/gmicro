@@ -2,60 +2,22 @@ package calculator
 
 import (
 	"context"
-	"fmt"
 	"io"
-	"net"
 	gmrpc "superdecimal/gmicro/pkg/proto"
-	hrpc "superdecimal/gmicro/pkg/proto/health"
 
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
 )
 
 type server struct {
-	grpcServer *grpc.Server
+	logger *zap.Logger
 }
 
 type Server interface {
 	gmrpc.CalculatorAPIServer
-
-	Listen(port int) error
-	Stop()
 }
 
-func NewServer() Server {
-	opts := []grpc.ServerOption{}
-	grpcServer := grpc.NewServer(opts...)
-
-	srv := &server{
-		grpcServer: grpcServer,
-	}
-	hsrv := &health{}
-
-	gmrpc.RegisterCalculatorAPIServer(grpcServer, srv)
-	hrpc.RegisterHealthServer(grpcServer, hsrv)
-
-	return srv
-}
-
-func (srv *server) Stop() {
-	srv.grpcServer.GracefulStop()
-}
-
-func (srv *server) Listen(
-	port int,
-) error {
-	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", port))
-	if err != nil {
-		return err
-	}
-
-	err = srv.grpcServer.Serve(lis)
-	if err != nil {
-		return err
-	}
-
-	return nil
+func NewServer(logger *zap.Logger) Server {
+	return &server{logger: logger}
 }
 
 func (srv *server) Add(
@@ -65,8 +27,7 @@ func (srv *server) Add(
 	*gmrpc.AddResponse,
 	error,
 ) {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync() //nolint:errcheck
+	logger := srv.logger
 
 	// get the inputs
 	a := req.GetA()
@@ -94,17 +55,18 @@ func (srv *server) Add(
 func (srv *server) Sum(
 	stream gmrpc.CalculatorAPI_SumServer,
 ) error {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync() //nolint:errcheck
+	logger := srv.logger
 
 	logger.Info("Sum method called")
 
 	total := int32(0)
 
 	for {
+		// Start receiving items from the stream
 		num, err := stream.Recv()
 		logger.Info("Received num", zap.Int32("num", num.GetNum()))
 
+		// if EOF we are done
 		if err == io.EOF {
 			if scerr := stream.SendAndClose(
 				&gmrpc.SumResponse{
