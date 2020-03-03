@@ -13,6 +13,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 func TestAdd(t *testing.T) {
@@ -33,7 +34,8 @@ func TestAdd(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			srv := calculator.NewServer()
+			logger, _ := zap.NewDevelopment()
+			srv := calculator.NewServer(logger)
 			ctx := context.Background()
 			request := gmrpc.AddRequest{A: tt.a, B: tt.b}
 
@@ -92,7 +94,8 @@ func TestSum(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
-			srv := calculator.NewServer()
+			logger, _ := zap.NewDevelopment()
+			srv := calculator.NewServer(logger)
 
 			stream := gmrpcmock.NewMockCalculatorAPI_SumServer(ctrl)
 			tt.expect(stream, tt.nums, tt.res)

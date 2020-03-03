@@ -1,14 +1,18 @@
-package calculator
+package health
 
 import (
 	"context"
 	hrpc "superdecimal/gmicro/pkg/proto/health"
 )
 
-type health struct {
+type Health struct {
 }
 
-func (hsrv *health) Check(
+func NewServer() *Health {
+	return &Health{}
+}
+
+func (hsrv *Health) Check(
 	ctx context.Context,
 	req *hrpc.HealthCheckRequest,
 ) (
@@ -20,7 +24,7 @@ func (hsrv *health) Check(
 	}, nil
 }
 
-func (hsrv *health) Watch(
+func (hsrv *Health) Watch(
 	req *hrpc.HealthCheckRequest,
 	stream hrpc.Health_WatchServer,
 ) error {
