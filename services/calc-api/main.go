@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"net"
-	"superdecimal/gmicro/pkg/utils"
-	"superdecimal/gmicro/services/calc-api/calculator"
-	"superdecimal/gmicro/services/calc-api/health"
 
+	"superdecimal/gmicro/services/calc-api/calculator"
 	"superdecimal/gmicro/services/calc-api/config"
+	"superdecimal/gmicro/services/calc-api/health"
 
 	gmrpc "superdecimal/gmicro/pkg/proto"
 	hrpc "superdecimal/gmicro/pkg/proto/health"
@@ -53,5 +52,5 @@ func main() {
 		}
 	}()
 
-	utils.Wait(grpcServer, logger)
+	Wait(grpcServer, logger)
 }
