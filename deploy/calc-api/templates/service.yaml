@@ -9,7 +9,7 @@ spec:
   ports:
     - port: {{ .Values.service.port }}
       targetPort: grpc
-      protocol: UDP
+      protocol: tcp
       name: grpc
   selector:
     {{- include "calc-api.selectorLabels" . | nindent 4 }}
