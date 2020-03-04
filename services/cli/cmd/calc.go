@@ -77,7 +77,7 @@ func CalcCommands(config *config.Configuration) *ishell.Cmd {
 	calc.AddCmd(
 		&ishell.Cmd{
 			Name: "sum",
-			Help: "sums numbers until eof (type eof to stop the stream)",
+			Help: "Sums numbers until eof (type eof to stop the stream)",
 			Func: func(c *ishell.Context) {
 				c.ShowPrompt(false)
 				defer c.ShowPrompt(true)
