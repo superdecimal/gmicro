@@ -41,10 +41,10 @@ This is an opinionated non-standard repo structure.
 * `.github/workflows` - ci files
 * `deploy` - deployment files
 * `docs` - documentation files
-* `pkg`  - code that is used by multiple services
-* `pkg/proto` - generated protobuf code
-* `proto` - protobuf files that the services implement
-* `services` - code for different services
+* `pkg`  - code to be shared by multiple services
+* `pkg/proto` - generated code from protobuf
+* `proto` - protobuf files
+* `services` - code for our services
 
 ## Makefile 
 
