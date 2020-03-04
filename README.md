@@ -29,8 +29,10 @@ alt="GitHub issues">
 * Minikube
 
 ## ToC
-* [12 Factor](docs/12.md)
 * [Usage](docs/usage.md)
+* [12 Factor](docs/12f.md)
+* [Deployment](docs/deployment.md)
+* [Further Work](docs/further_work.md)
 
 
 ## Repo Structure
